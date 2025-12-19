@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TreeHarvester:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TreeHarvester_jar</output-path>
+    <root id="archive" name="TreeHarvester.jar">
+      <element id="module-output" name="TreeHarvester" />
+    </root>
+  </artifact>
+</component>
