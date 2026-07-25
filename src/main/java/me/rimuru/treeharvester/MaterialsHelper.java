@@ -52,6 +52,12 @@ public class MaterialsHelper {
         tryAddMaterial(LEAF_TYPES, "NETHER_WART_BLOCK");
         tryAddMaterial(LEAF_TYPES, "WARPED_WART_BLOCK");
 
+        // 1.17+ leaves (azalea)
+        tryAddMaterial(LEAF_TYPES, "AZALEA");
+        tryAddMaterial(LEAF_TYPES, "FLOWERING_AZALEA");
+        tryAddMaterial(LEAF_TYPES, "AZALEA_LEAVES");
+        tryAddMaterial(LEAF_TYPES, "FLOWERING_AZALEA_LEAVES");
+
         // 1.19+ leaves
         tryAddMaterial(LEAF_TYPES, "MANGROVE_LEAVES");
 
@@ -125,7 +131,31 @@ public class MaterialsHelper {
     }
 
     public static boolean isLeaf(Material material) {
-        return LEAF_TYPES.contains(material);
+        if (material == null) {
+            return false;
+        }
+
+        if (LEAF_TYPES.contains(material)) {
+            return true;
+        }
+
+        String name = material.name();
+        return name.equals("AZALEA") ||
+                name.equals("FLOWERING_AZALEA") ||
+                name.equals("AZALEA_LEAVES") ||
+                name.equals("FLOWERING_AZALEA_LEAVES");
+    }
+
+    public static boolean isAzaleaLikeLeaf(Material material) {
+        if (material == null) {
+            return false;
+        }
+
+        String name = material.name();
+        return name.equals("AZALEA") ||
+                name.equals("FLOWERING_AZALEA") ||
+                name.equals("AZALEA_LEAVES") ||
+                name.equals("FLOWERING_AZALEA_LEAVES");
     }
 
     public static Material getSaplingForLog(Material log) {

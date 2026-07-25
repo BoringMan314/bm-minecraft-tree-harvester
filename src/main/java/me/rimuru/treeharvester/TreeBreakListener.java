@@ -83,6 +83,9 @@ public class TreeBreakListener implements Listener {
         // Find all leaves connected to this tree BEFORE breaking logs
         Set<Block> connectedLeaves = findConnectedLeaves(treeBlocks);
 
+        // Resolve sapling before logs/leaves are changed.
+        Material saplingToPlant = resolveSaplingType(logType, connectedLeaves);
+
         // Break all logs
         for (Block log : treeBlocks) {
             log.breakNaturally(tool);
@@ -106,7 +109,7 @@ public class TreeBreakListener implements Listener {
 
         // Auto-replant saplings based on base block count
         if (plugin.getConfig().getBoolean("auto-replant", true)) {
-            Material sapling = MaterialsHelper.getSaplingForLog(logType);
+            Material sapling = saplingToPlant;
             if (sapling != null && !baseBlocks.isEmpty()) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     for (Block baseBlock : baseBlocks) {
@@ -120,6 +123,35 @@ public class TreeBreakListener implements Listener {
         }
     }
 
+
+    private Material resolveSaplingType(Material logType, Set<Block> connectedLeaves) {
+        if (containsAzaleaLeaves(connectedLeaves)) {
+            Material azalea = tryGetMaterial("AZALEA");
+            if (azalea != null) {
+                return azalea;
+            }
+        }
+
+        return MaterialsHelper.getSaplingForLog(logType);
+    }
+
+    private boolean containsAzaleaLeaves(Set<Block> leaves) {
+        for (Block leaf : leaves) {
+            if (MaterialsHelper.isAzaleaLikeLeaf(leaf.getType())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Material tryGetMaterial(String materialName) {
+        try {
+            return Material.valueOf(materialName);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
 
     private Set<Block> findConnectedLeaves(Set<Block> logs) {
         Set<Block> leaves = new HashSet<>();
@@ -245,7 +277,7 @@ public class TreeBreakListener implements Listener {
         if (meta != null && meta.isUnbreakable()) return;
 
         // Get Unbreaking level
-        int unbreakingLevel = tool.getEnchantmentLevel(Enchantment.DURABILITY);
+        int unbreakingLevel = tool.getEnchantmentLevel(Enchantment.UNBREAKING);
 
         // Apply damage for each log with Unbreaking chance
         int actualDamage = 0;
