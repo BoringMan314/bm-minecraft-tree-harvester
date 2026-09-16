@@ -19,12 +19,12 @@ public class TreeHarvesterCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage("§6§l════════ TreeHarvester ════════");
-            sender.sendMessage("§e/treeharvester reload §7- Reload configuration");
-            sender.sendMessage("§e/treeharvester info §7- Show plugin info");
-            sender.sendMessage("§e/treeharvester stats §7- Show database statistics");
-            sender.sendMessage("§e/treeharvester optimize §7- Optimize database");
-            sender.sendMessage("§6§l═══════════════════════════════");
+            send(sender, "command.help-header");
+            send(sender, "command.help-reload");
+            send(sender, "command.help-info");
+            send(sender, "command.help-stats");
+            send(sender, "command.help-optimize");
+            send(sender, "command.help-footer");
             return true;
         }
 
@@ -33,56 +33,56 @@ public class TreeHarvesterCommand implements CommandExecutor, TabCompleter {
         switch (subCommand) {
             case "reload":
                 if (!sender.hasPermission("treeharvester.admin")) {
-                    sender.sendMessage("§cYou don't have permission to use this command!");
+                    send(sender, "command.no-permission");
                     return true;
                 }
                 plugin.reloadPluginConfig();
-                sender.sendMessage("§aTreeHarvester configuration reloaded!");
+                send(sender, "command.reloaded");
                 return true;
 
             case "info":
-                sender.sendMessage("§6§l════════ TreeHarvester ════════");
-                sender.sendMessage("§7Version: §e1.0");
-                sender.sendMessage("§7Supports: §e1.13-1.21+");
-                sender.sendMessage("§7Author: §eRimuru");
+                send(sender, "command.help-header");
+                send(sender, "command.info-version");
+                send(sender, "command.info-supports");
+                send(sender, "command.info-author");
                 sender.sendMessage("");
-                sender.sendMessage("§6Features:");
-                sender.sendMessage("§e✓ §7Natural tree detection");
-                sender.sendMessage("§e✓ §7Auto replanting");
-                sender.sendMessage("§e✓ §7Silk touch support");
-                sender.sendMessage("§e✓ §7Durability management");
-                sender.sendMessage("§e✓ §7SQLite database tracking");
-                sender.sendMessage("§e✓ §7Big tree support (2x2 thick)");
-                sender.sendMessage("§e✓ §7Mushroom tree support");
-                sender.sendMessage("§e✓ §7All tree types (Oak → Pale Oak)");
-                sender.sendMessage("§6§l═══════════════════════════════");
+                send(sender, "command.info-features");
+                send(sender, "command.info-natural-detection");
+                send(sender, "command.info-auto-replant");
+                send(sender, "command.info-silk-touch");
+                send(sender, "command.info-durability");
+                send(sender, "command.info-database");
+                send(sender, "command.info-big-tree");
+                send(sender, "command.info-mushroom");
+                send(sender, "command.info-all-trees");
+                send(sender, "command.help-footer");
                 return true;
 
             case "stats":
                 if (!sender.hasPermission("treeharvester.admin")) {
-                    sender.sendMessage("§cYou don't have permission to use this command!");
+                    send(sender, "command.no-permission");
                     return true;
                 }
                 int totalBlocks = plugin.getDatabaseManager().getTotalTrackedBlocks();
-                sender.sendMessage("§6§l═══ Database Statistics ═══");
-                sender.sendMessage("§7Total tracked blocks: §e" + totalBlocks);
-                sender.sendMessage("§7Database: §eplayer_blocks.db");
-                sender.sendMessage("§6§l═════════════════════════");
+                send(sender, "command.stats-header");
+                send(sender, "command.stats-total", "{count}", String.valueOf(totalBlocks));
+                send(sender, "command.stats-database");
+                send(sender, "command.stats-footer");
                 return true;
 
             case "optimize":
                 if (!sender.hasPermission("treeharvester.admin")) {
-                    sender.sendMessage("§cYou don't have permission to use this command!");
+                    send(sender, "command.no-permission");
                     return true;
                 }
-                sender.sendMessage("§7Optimizing database...");
+                send(sender, "command.optimizing");
                 plugin.getDatabaseManager().optimizeDatabase().thenRun(() -> {
-                    sender.sendMessage("§aDatabase optimization completed!");
+                    send(sender, "command.optimized");
                 });
                 return true;
 
             default:
-                sender.sendMessage("§cUnknown command. Use /treeharvester for help.");
+                send(sender, "command.unknown");
                 return true;
         }
     }
@@ -101,5 +101,13 @@ public class TreeHarvesterCommand implements CommandExecutor, TabCompleter {
         }
 
         return completions;
+    }
+
+    private void send(CommandSender sender, String path) {
+        sender.sendMessage(plugin.getLanguageManager().get(path));
+    }
+
+    private void send(CommandSender sender, String path, String placeholder, String value) {
+        sender.sendMessage(plugin.getLanguageManager().get(path).replace(placeholder, value));
     }
 }

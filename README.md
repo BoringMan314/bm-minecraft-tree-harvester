@@ -70,6 +70,20 @@ leaf-decay-delay-ticks: 40
 
 # Respect protection plugins (WorldGuard, GriefPrevention, etc.)
 respect-protection-plugins: true
+
+### Language
+
+`build.bat` produces four fixed-language JARs in `dist/`. Install the one that matches your server language.
+
+```text
+TreeHarvester_26.2_1.1-en_US.jar
+TreeHarvester_26.2_1.1-zh_TW.jar
+TreeHarvester_26.2_1.1-zh_CN.jar
+TreeHarvester_26.2_1.1-ja_JP.jar
+```
+
+The selected JAR extracts its language file to `plugins/TreeHarvester/lang/` on first startup; you can customize its messages there.
+
 📋 Requirements
 
 Minecraft Version: 1.13 - 1.21+

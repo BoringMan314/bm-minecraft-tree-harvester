@@ -2,7 +2,7 @@
 #                    TreeHarvester Configuration
 # ═══════════════════════════════════════════════════════════
 # A smart tree harvesting plugin that respects natural generation
-# Version: 1.0
+# Version: 26.2_1.1
 # Author: Rimuru
 # ═══════════════════════════════════════════════════════════
 
@@ -50,17 +50,6 @@ leaf-decay-delay-ticks: 40
 # If true, tree harvesting will respect region protections
 # If false, tree harvesting will work everywhere
 respect-protection-plugins: true
-
-# ═══════════════════════════════════════════════════════════
-#                         MESSAGES
-# ═══════════════════════════════════════════════════════════
-
-messages:
-  # Message shown when player doesn't have permission
-  no-permission: "&cYou don't have permission to use TreeHarvester!"
-
-  # Message shown when axe doesn't have enough durability
-  insufficient-durability: "&cYour axe doesn't have enough durability to chop this tree!"
 
 # ═══════════════════════════════════════════════════════════
 #                    ADVANCED SETTINGS
