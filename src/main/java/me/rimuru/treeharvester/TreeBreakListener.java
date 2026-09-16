@@ -52,9 +52,7 @@ public class TreeBreakListener implements Listener {
         // Check if player has permission (if required)
         if (plugin.getConfig().getBoolean("require-permission", false)) {
             if (!player.hasPermission("treeharvester.use")) {
-                String message = plugin.getConfig().getString("messages.no-permission",
-                        "&cYou don't have permission to use TreeHarvester!");
-                player.sendMessage(message.replace("&", "§"));
+                player.sendMessage(plugin.getLanguageManager().get("messages.no-permission"));
                 return;
             }
         }
@@ -67,7 +65,7 @@ public class TreeBreakListener implements Listener {
 
         // Check if tool has enough durability (only in survival)
         if (playerMode == GameMode.SURVIVAL && !hasSufficientDurability(tool, logCount)) {
-            player.sendMessage("§cYour axe doesn't have enough durability to chop this tree!");
+            player.sendMessage(plugin.getLanguageManager().get("messages.insufficient-durability"));
             return;
         }
 

@@ -1,5 +1,5 @@
 name: TreeHarvester
-version: 1.0
+version: "26.2_1.1"
 main: me.rimuru.treeharvester.TreeHarvester
 api-version: 1.13
 author: Rimuru

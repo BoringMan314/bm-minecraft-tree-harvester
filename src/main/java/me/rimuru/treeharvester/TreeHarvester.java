@@ -8,6 +8,7 @@ public class TreeHarvester extends JavaPlugin {
     private static TreeHarvester instance;
     private FileConfiguration config;
     private DatabaseManager databaseManager;
+    private LanguageManager languageManager;
 
     @Override
     public void onEnable() {
@@ -16,6 +17,7 @@ public class TreeHarvester extends JavaPlugin {
         // Save default config
         saveDefaultConfig();
         config = getConfig();
+        languageManager = new LanguageManager(this);
 
         // Initialize database
         databaseManager = new DatabaseManager(this);
@@ -51,8 +53,13 @@ public class TreeHarvester extends JavaPlugin {
         return databaseManager;
     }
 
+    public LanguageManager getLanguageManager() {
+        return languageManager;
+    }
+
     public void reloadPluginConfig() {
         reloadConfig();
         config = getConfig();
+        languageManager.reload();
     }
 }
